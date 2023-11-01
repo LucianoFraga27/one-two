@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.user.persistence;
+package com.stoica.onetwo.domain.auth.persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,14 +6,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.stoica.onetwo.domain.user.User;
-import com.stoica.onetwo.domain.user.UserAuthorizationService;
+import com.stoica.onetwo.domain.auth.AuthModel;
+import com.stoica.onetwo.domain.auth.AuthorizationService;
 
 @Service
-public class UserAuthorizationImpl implements UserDetailsService, UserAuthorizationService{
+public class AuthAuthorizationImpl implements UserDetailsService, AuthorizationService{
 	
 	@Autowired
-	UserRepository repository;
+	AuthRepository repository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -26,7 +26,7 @@ public class UserAuthorizationImpl implements UserDetailsService, UserAuthorizat
 	}
 
 	@Override
-	public User registerUser(User user) {
+	public AuthModel registerUser(AuthModel user) {
 		repository.save(user);
 		return user;
 	}

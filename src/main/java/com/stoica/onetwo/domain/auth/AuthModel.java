@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.user;
+package com.stoica.onetwo.domain.auth;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name="auth_table")
-public class User  implements UserDetails{
+public class AuthModel  implements UserDetails{
 	
 	@EqualsAndHashCode.Include
 	@Id
@@ -32,9 +32,9 @@ public class User  implements UserDetails{
 	private Long id;
 	private String login;
 	private String password;
-	private UserRole role;
+	private AuthRole role;
 	
-	public User(String login, String password, UserRole role) {
+	public AuthModel(String login, String password, AuthRole role) {
 		this.login = login;
 		this.password = password;
 		this.role = role;
@@ -42,7 +42,7 @@ public class User  implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+		if(this.role == AuthRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 		else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 	

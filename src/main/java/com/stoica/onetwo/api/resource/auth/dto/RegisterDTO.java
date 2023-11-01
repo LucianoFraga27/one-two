@@ -1,7 +1,7 @@
 package com.stoica.onetwo.api.resource.auth.dto;
 
-import com.stoica.onetwo.domain.user.UserRole;
+import com.stoica.onetwo.domain.auth.AuthRole;
 
-public record RegisterDTO(String login, String password, UserRole role) {
+public record RegisterDTO(String login, String password, AuthRole role) {
 
 }

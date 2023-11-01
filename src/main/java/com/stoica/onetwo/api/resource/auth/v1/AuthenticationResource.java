@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stoica.onetwo.api.config.security.TokenService;
 import com.stoica.onetwo.api.resource.auth.dto.LoginDTO;
 import com.stoica.onetwo.api.resource.auth.dto.RegisterDTO;
-import com.stoica.onetwo.domain.user.User;
-import com.stoica.onetwo.domain.user.UserAuthorizationService;
+import com.stoica.onetwo.domain.auth.AuthModel;
+import com.stoica.onetwo.domain.auth.AuthorizationService;
 
 import jakarta.validation.Valid;
 
@@ -35,7 +35,7 @@ public class AuthenticationResource {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserAuthorizationService userAuthorizationService;
+	private AuthorizationService userAuthorizationService;
 	
 	@Autowired
 	private TokenService tokenService;
@@ -44,14 +44,14 @@ public class AuthenticationResource {
 	public ResponseEntity<?> login (@RequestBody @Valid LoginDTO loginDTO) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.login(), loginDTO.password());
 		var auth = authenticationManager.authenticate(usernamePassword);
-		return ResponseEntity.ok(tokenService.generateToken((User)auth.getPrincipal()));
+		return ResponseEntity.ok(tokenService.generateToken((AuthModel)auth.getPrincipal()));
 	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register (@RequestBody @Valid RegisterDTO registerDTO) {
 		if(this.userAuthorizationService.findByLogin(registerDTO.login()) != null) return ResponseEntity.badRequest().build();
 		String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
-		User newUser = new User(registerDTO.login(), encryptedPassword, registerDTO.role());
+		AuthModel newUser = new AuthModel(registerDTO.login(), encryptedPassword, registerDTO.role());
 		userAuthorizationService.registerUser(newUser);
 		return ResponseEntity.ok().body(newUser);
 	}
