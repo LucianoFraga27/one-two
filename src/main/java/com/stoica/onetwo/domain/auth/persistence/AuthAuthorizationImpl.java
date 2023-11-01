@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.stoica.onetwo.domain.auth.AuthModel;
 import com.stoica.onetwo.domain.auth.AuthorizationService;
+import com.stoica.onetwo.domain.usuario.UsuarioModel;
+import com.stoica.onetwo.domain.usuario.UsuarioService;
 
 @Service
 public class AuthAuthorizationImpl implements UserDetailsService, AuthorizationService{
 	
 	@Autowired
 	AuthRepository repository;
+	
+	@Autowired
+	UsuarioService usuarioService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,8 +32,12 @@ public class AuthAuthorizationImpl implements UserDetailsService, AuthorizationS
 
 	@Override
 	public AuthModel registerUser(AuthModel user) {
-		repository.save(user);
-		return user;
+		UsuarioModel usuarioModel = new UsuarioModel();
+		AuthModel auth = repository.save(user);
+		usuarioModel.setId(auth.getId());
+		usuarioModel.setEmail(auth.getLogin());
+		usuarioService.save(usuarioModel);
+		return auth;
 	}
 
 }
