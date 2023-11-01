@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.stoica.onetwo.api.resource.usuario.dto.AddUsernameAndFotoDTO;
+import com.stoica.onetwo.api.resource.usuario.dto.UsuarioMapper;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 
@@ -23,20 +23,20 @@ import lombok.AllArgsConstructor;
 public class UsuarioResource {
 
 	UsuarioService usuarioService;
+	UsuarioMapper usuarioMapper;
 	
 	@GetMapping
 	public List<UsuarioModel> findAll() {
-		return usuarioService.findAll();
+		return usuarioMapper.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public UsuarioModel findById(@PathVariable(value="id") Long id) {
-		return usuarioService.findById(id);
+		return usuarioMapper.findById(id);
 	}
 	
 	@PostMapping(value = "/{id}",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public void addUsernameAndFoto (@PathVariable(value="id") Long id, AddUsernameAndFotoDTO post) throws IOException {
-		MultipartFile imagem = post.fotoPerfil();
 		usuarioService.addUsernameAndFoto(id,post, post.fotoPerfil().getInputStream());
 	}
 	
