@@ -25,5 +25,6 @@ public class UsuarioModel {
 	private String email;
 	
 	private String username;
-
+	
+	private String fotoPerfil;
 }
