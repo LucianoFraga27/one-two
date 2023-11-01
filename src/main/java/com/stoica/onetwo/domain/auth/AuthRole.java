@@ -1,13 +1,13 @@
-package com.stoica.onetwo.domain.user;
+package com.stoica.onetwo.domain.auth;
 
-public enum UserRole {
+public enum AuthRole {
 	
 	ADMIN("admin"),
 	USER("user");
 	
 	private String role;
 	
-	UserRole(String role) {
+	AuthRole(String role) {
 		this.role = role;
 	}
 	

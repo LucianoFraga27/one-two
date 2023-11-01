@@ -13,7 +13,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.stoica.onetwo.domain.user.User;
+import com.stoica.onetwo.domain.auth.AuthModel;
 
 @Service
 public class TokenService {
@@ -21,7 +21,7 @@ public class TokenService {
 	@Value("${api.security.token.secret}")
 	private String secret ;
 	
-	public Map<String, String> generateToken(User user) {
+	public Map<String, String> generateToken(AuthModel user) {
 		try {
 		    
 			Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -54,7 +54,7 @@ public class TokenService {
 	}
 	
 	private Instant expiresIn() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusHours(5).toInstant(ZoneOffset.of("-03:00"));
 	}
 	
 }

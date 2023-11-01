@@ -1,4 +1,8 @@
 spring:
+ servlet:
+    multipart:
+      max-file-size: 100MB      
+      max-request-size: 100MB  
  datasource:
   url: jdbc:mysql://one-two-estudo.coy5hev8tysf.us-east-2.rds.amazonaws.com/onetwoestudo
   username: admin
@@ -18,10 +22,20 @@ spring:
 server:
  port: 8082
  
-
 api:
  auth:
   providerUrl: http://localhost:8082
  security:
    token:
      secret: ${JWT_SECRET:my-secret-key}
+     
+onetwo-storage:
+    local: 
+     diretorio: /Users/lucas/Desktop/arquivos-tcc
+    s3: 
+      id-chave-acesso: AKIA3UTCRJWVBQJ7GJU7
+      id-chave-acesso-secreta: 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
+      bucket: onetwo-arquivos-estudo
+      regiao: us-east-2
+      diretorio: catalogo
+      

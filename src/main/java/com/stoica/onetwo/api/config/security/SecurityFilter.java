@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.stoica.onetwo.domain.user.UserAuthorizationService;
+import com.stoica.onetwo.domain.auth.AuthorizationService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 	TokenService tokenService;
 	
 	@Autowired
-	UserAuthorizationService userAuthorization;
+	AuthorizationService userAuthorization;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

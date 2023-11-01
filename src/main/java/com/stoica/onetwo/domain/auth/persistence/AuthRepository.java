@@ -1,10 +1,10 @@
-package com.stoica.onetwo.domain.user.persistence;
+package com.stoica.onetwo.domain.auth.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.stoica.onetwo.domain.user.User;
+import com.stoica.onetwo.domain.auth.AuthModel;
 
-interface UserRepository extends JpaRepository<User, String> {
+interface AuthRepository extends JpaRepository<AuthModel, String> {
 	UserDetails findByLogin(String login);
 }
