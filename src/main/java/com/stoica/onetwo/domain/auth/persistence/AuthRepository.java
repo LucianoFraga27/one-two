@@ -5,6 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.stoica.onetwo.domain.auth.AuthModel;
 
-interface AuthRepository extends JpaRepository<AuthModel, String> {
+interface AuthRepository extends JpaRepository<AuthModel, Long> {
 	UserDetails findByLogin(String login);
 }
