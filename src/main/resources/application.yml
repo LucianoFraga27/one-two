@@ -4,9 +4,9 @@ spring:
       max-file-size: 100MB      
       max-request-size: 100MB  
  datasource:
-  url: jdbc:mysql://one-two-estudo.coy5hev8tysf.us-east-2.rds.amazonaws.com/onetwoestudo
+  url: jdbc:mysql://one-two.c5kps9ts3u0h.us-east-1.rds.amazonaws.com/onetwo
   username: admin
-  password: admin1234
+  password: admin123
  jpa:
    hibernate:
       ddl-auto: update
@@ -33,8 +33,8 @@ onetwo-storage:
     local: 
      diretorio: /Users/lucas/Desktop/arquivos-tcc
     s3: 
-      id-chave-acesso: AKIA3UTCRJWVBQJ7GJU7
-      id-chave-acesso-secreta: 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
+      id-chave-acesso: AKIA3UTCRJWVFY2NB46T
+      id-chave-acesso-secreta: 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
       bucket: onetwo-arquivos-estudo
       regiao: us-east-2
       diretorio: catalogo
