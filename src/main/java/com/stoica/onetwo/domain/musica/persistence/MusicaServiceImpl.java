@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaPostDTO;
 import com.stoica.onetwo.core.upload.ArmazenarUpload;
 import com.stoica.onetwo.core.upload.ArmazenarUpload.NovoArquivo;
+import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -49,7 +51,9 @@ class MusicaServiceImpl implements MusicaService{
 		
 		MusicaModel musicaModel = new MusicaModel();
 		
-		musicaModel.setUsuario(musica.getId_usuario());
+		UsuarioModel usuarioModel = usuarioService.findById(musica.getId_usuario());
+
+		musicaModel.setUsuario(usuarioModel);
 		
 		musicaModel.setTitulo(musica.getTitulo());
 		
@@ -79,6 +83,39 @@ class MusicaServiceImpl implements MusicaService{
 		armazenarUpload.remover(entityExists.getCapa());
 	}
 
+
+	@Override
+	public List<MusicaModel> listByGenero(GeneroEnum generoEnum) {
+		List<MusicaModel> musicasDoGeneroUsuario = musicaRepository.findByGenero(generoEnum);
+
+        // Etapa 2: Obtenha todas as músicas restantes ordenadas por gênero
+        List<MusicaModel> musicasRestantes = musicaRepository.findAllByOrderByGenero();
+
+        // Combine as duas listas de músicas
+        musicasRestantes.removeAll(musicasDoGeneroUsuario); // Remova as músicas duplicadas
+        musicasDoGeneroUsuario.addAll(musicasRestantes);
+
+        return musicasDoGeneroUsuario;
+		}
+
+		 public void curtirMusica(Long musicaId, Long usuarioId) {
+        MusicaModel musica = findById(musicaId);
+
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+
+        musica.getUsuariosCurtiram().add(usuario);
+        musicaRepository.save(musica);
+    }
+
+	public void descurtirMusica(Long musicaId, Long usuarioId) {
+        MusicaModel musica = findById(musicaId);
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+        musica.getUsuariosCurtiram().remove(usuario);
+        musicaRepository.save(musica);
+    }
 	
+	public long contarCurtidas(Long musicaId) {
+        return musicaRepository.countCurtidas(musicaId);
+    }
 
 }
