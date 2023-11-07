@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.stoica.onetwo.api.resource.usuario.dto.AddUsernameAndFotoDTO;
+import com.stoica.onetwo.domain.musica.GeneroEnum;
 
 public interface UsuarioService {
 	

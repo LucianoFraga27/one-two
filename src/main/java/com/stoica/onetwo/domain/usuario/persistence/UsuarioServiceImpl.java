@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.stoica.onetwo.api.resource.usuario.dto.AddUsernameAndFotoDTO;
 import com.stoica.onetwo.core.upload.ArmazenarUpload;
 import com.stoica.onetwo.core.upload.ArmazenarUpload.NovoArquivo;
+import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 
@@ -50,6 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 		user.setUsername(post.username());
 		String capa = armazenarUpload.gerarNomeArquivo(post.fotoPerfil().getOriginalFilename());
 		user.setFotoPerfil(capa);
+		user.setGeneroFavorito(post.generoFavorito());
 		usuarioRepository.save(user);
 		armazenarUpload.armazenar(NovoArquivo.builder().nomeArquivo(capa).inputStream(dadosImagem).contentType(post.fotoPerfil().getContentType()).build());
 	}
