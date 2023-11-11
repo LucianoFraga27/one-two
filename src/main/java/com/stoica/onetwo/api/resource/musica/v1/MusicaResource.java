@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stoica.onetwo.api.resource.musica.dto.MusicaMapper;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaPostDTO;
+import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseCurtidaDTO;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseDTO;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
@@ -31,7 +32,7 @@ public class MusicaResource {
 	MusicaMapper musicaMapper;
 
 	@GetMapping
-	public List<MusicaModel> findAll() {
+	public List<MusicaResponseDTO> findAll() {
 		return musicaMapper.findAll();
 	}
 	
@@ -55,12 +56,17 @@ public class MusicaResource {
 	
 	}
 
+	@GetMapping("/usuario/{usuarioId}")
+	public List<MusicaResponseCurtidaDTO> findByUsuario(@PathVariable Long usuarioId) {
+		return musicaMapper.findByUsuario(usuarioId);
+	}
+
 	@GetMapping("/genero/{genero}")
 	public List<MusicaModel> listByGenero(@PathVariable GeneroEnum genero) {
 		return musicaService.listByGenero(genero);
 	}
 
-	 @PostMapping("/{musicaId}/curtir/{usuarioId}")
+	@PostMapping("/{musicaId}/curtir/{usuarioId}")
     public ResponseEntity<String> curtirMusica(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
         musicaService.curtirMusica(musicaId, usuarioId);
         return ResponseEntity.ok("Música curtida com sucesso.");
@@ -70,5 +76,10 @@ public class MusicaResource {
     public ResponseEntity<String> descurtir(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
         musicaService.descurtirMusica(musicaId, usuarioId);
         return ResponseEntity.ok("Música descurtida com sucesso.");
+    }
+	
+	@PostMapping("/{musicaId}/curtirOuDescurtir/{usuarioId}")
+    public ResponseEntity<String> curtirOuDescurtir(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
+       return ResponseEntity.ok(musicaService.curtirOuDescurtirMusica(musicaId, usuarioId));
     }
 }
