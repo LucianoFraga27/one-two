@@ -15,6 +15,6 @@ public class GetUsuarioResponseDTO {
     private String username;
     private String fotoPerfil;
     private GeneroEnum generoFavorito;
-    private int seguidoresCount;
-    private int seguindoCount;
+    private Long seguidoresCount;
+    private Long seguindoCount;
 }
