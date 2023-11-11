@@ -1,4 +1,4 @@
-package com.stoica.onetwo.api.resource.auth.dto;
+package com.stoica.onetwo.api.resource.autenticacao.dto;
 
 import lombok.Getter;
 import lombok.Setter;

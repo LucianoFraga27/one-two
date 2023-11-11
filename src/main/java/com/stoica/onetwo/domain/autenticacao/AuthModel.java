@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.auth;
+package com.stoica.onetwo.domain.autenticacao;
 
 import java.util.Collection;
 import java.util.List;

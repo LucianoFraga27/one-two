@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.auth;
+package com.stoica.onetwo.domain.autenticacao;
 
 public enum AuthRole {
 	

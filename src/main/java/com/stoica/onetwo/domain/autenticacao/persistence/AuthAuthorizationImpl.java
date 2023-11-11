@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.auth.persistence;
+package com.stoica.onetwo.domain.autenticacao.persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.stoica.onetwo.domain.auth.AuthModel;
-import com.stoica.onetwo.domain.auth.AuthorizationService;
+import com.stoica.onetwo.domain.autenticacao.AuthModel;
+import com.stoica.onetwo.domain.autenticacao.AuthorizationService;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 

@@ -14,8 +14,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.stoica.onetwo.api.resource.usuario.dto.GetUsuarioResponseDTO;
 import com.stoica.onetwo.api.resource.usuario.dto.UsuarioMapper;
-import com.stoica.onetwo.domain.auth.AuthModel;
+import com.stoica.onetwo.domain.autenticacao.AuthModel;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 
@@ -36,7 +37,7 @@ public class TokenService {
 		    
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 		    
-			UsuarioModel usuarioModel = usuarioMapper.findById(user.getId());
+			GetUsuarioResponseDTO usuarioModel = usuarioMapper.findById(user.getId());
 			
 			Map responseToken = new HashMap<>();
 			

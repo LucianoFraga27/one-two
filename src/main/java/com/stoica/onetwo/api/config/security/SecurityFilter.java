@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.stoica.onetwo.domain.auth.AuthorizationService;
+import com.stoica.onetwo.domain.autenticacao.AuthorizationService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.stoica.onetwo.api.resource.auth.v1;
+package com.stoica.onetwo.api.resource.autenticacao.v1;
 
 import java.security.Principal;
 
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stoica.onetwo.api.config.security.TokenService;
-import com.stoica.onetwo.api.resource.auth.dto.LoginDTO;
-import com.stoica.onetwo.api.resource.auth.dto.RegisterDTO;
-import com.stoica.onetwo.domain.auth.AuthModel;
-import com.stoica.onetwo.domain.auth.AuthorizationService;
+import com.stoica.onetwo.api.resource.autenticacao.dto.LoginDTO;
+import com.stoica.onetwo.api.resource.autenticacao.dto.RegisterDTO;
+import com.stoica.onetwo.domain.autenticacao.AuthModel;
+import com.stoica.onetwo.domain.autenticacao.AuthorizationService;
 
 import jakarta.validation.Valid;
 

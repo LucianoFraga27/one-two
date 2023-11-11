@@ -1,4 +1,4 @@
-package com.stoica.onetwo.domain.auth;
+package com.stoica.onetwo.domain.autenticacao;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
