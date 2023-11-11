@@ -18,6 +18,7 @@ import com.stoica.onetwo.api.resource.musica.dto.MusicaMapper;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaPostDTO;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseCurtidaDTO;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseDTO;
+import com.stoica.onetwo.api.resource.musica.dto.PesquisaMusicaDTO;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
@@ -85,8 +86,13 @@ public class MusicaResource {
     }
 
 	@GetMapping("/pesquisar/{termo}")
-    public ResponseEntity<List<MusicaModel>> pesquisarPorTermo(@PathVariable String termo) {
-        List<MusicaModel> musicasEncontradas = musicaService.pesquisarPorTermo(termo);
+    public ResponseEntity<List<PesquisaMusicaDTO>> pesquisarPorTermo(@PathVariable String termo) {
+        List<PesquisaMusicaDTO> musicasEncontradas = musicaMapper.pesquisarPorTermo(termo);
         return ResponseEntity.ok(musicasEncontradas);
+    }
+
+	@GetMapping("/top")
+    public ResponseEntity<List<PesquisaMusicaDTO>> getTop() {
+      return ResponseEntity.ok(musicaMapper.top());
     }
 }

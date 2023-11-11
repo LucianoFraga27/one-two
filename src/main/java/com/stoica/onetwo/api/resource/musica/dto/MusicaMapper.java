@@ -1,6 +1,8 @@
 package com.stoica.onetwo.api.resource.musica.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -71,6 +73,7 @@ public class MusicaMapper {
 	    for (MusicaModel musica : musicas) {
 			MusicaResponseCurtidaDTO dto = new MusicaResponseCurtidaDTO(); 
 	    	dto.setId(musica.getId());
+			dto.setAutor(musica.getUsuario().getUsername());
 			dto.setTitulo(musica.getTitulo());
 			dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
 			dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
@@ -81,7 +84,12 @@ public class MusicaMapper {
 				UsuarioCurtiuDTO usuarioCurtiu = new UsuarioCurtiuDTO();
 				usuarioCurtiu.setId(usuario.getId());
 				usuarioCurtiu.setUsername(usuario.getUsername());
-				usuarioCurtiu.setFotoPerfil(usuario.getFotoPerfil());
+				if(usuario.getFotoPerfil() == null) {
+					usuarioCurtiu.setFotoPerfil(null);
+				} else {
+					usuarioCurtiu.setFotoPerfil(amazenarUpload.recuperar(usuario.getFotoPerfil()).getUrl());
+				}
+
 				usuariosCurtiram.add(usuarioCurtiu);
 			}
 			dto.setUsuariosCurtiram(usuariosCurtiram);			
@@ -90,5 +98,55 @@ public class MusicaMapper {
 	    }
 	    return response;
 	}
+
+	public List<PesquisaMusicaDTO> pesquisarPorTermo(String termo) {
+		List<PesquisaMusicaDTO> response = new ArrayList<>();
+		UsuarioMusicaDTO autor = new UsuarioMusicaDTO();
+		List<MusicaModel> musicasEncontradas = musicaService.pesquisarPorTermo(termo);
+
+		for (MusicaModel m : musicasEncontradas) {
+			PesquisaMusicaDTO dto = new PesquisaMusicaDTO();
+			dto.setIdMusica(m.getId());
+			dto.setTitulo(m.getTitulo());
+			dto.setCapa(amazenarUpload.recuperar(m.getCapa()).getUrl());
+			dto.setAudio(amazenarUpload.recuperar(m.getAudio()).getUrl());
+			dto.setGenero(m.getGenero());
+			dto.setCurtidas(musicaService.contarCurtidas(m.getId()));
+			autor.setId(m.getUsuario().getId());
+			autor.setUsername(m.getUsuario().getUsername());
+			dto.setAutor(autor);
+			response.add(dto);
+		}
+
+
+		return response;
+	}
+
+	public List<PesquisaMusicaDTO> top () {
+		List<PesquisaMusicaDTO> response = new ArrayList<>();
+		UsuarioMusicaDTO autor = new UsuarioMusicaDTO();
+		List<MusicaModel> musicas = musicaService.findAll();
+
+		for ( MusicaModel m : musicas ) {
+			PesquisaMusicaDTO dto = new PesquisaMusicaDTO();
+			dto.setIdMusica(m.getId());
+			dto.setTitulo(m.getTitulo());
+			dto.setCapa(amazenarUpload.recuperar(m.getCapa()).getUrl());
+			dto.setAudio(amazenarUpload.recuperar(m.getAudio()).getUrl());
+			dto.setGenero(m.getGenero());
+			dto.setCurtidas(musicaService.contarCurtidas(m.getId()));
+			autor.setId(m.getUsuario().getId());
+			autor.setUsername(m.getUsuario().getUsername());
+			dto.setAutor(autor);
+			response.add(dto);
+		}
+		
+		Collections.sort(response, Comparator.comparingLong(PesquisaMusicaDTO::getCurtidas).reversed());
+
+		return response;
+
+
+	}
+
 	
 }
