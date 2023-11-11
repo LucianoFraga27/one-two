@@ -15,4 +15,6 @@ public interface MusicaService {
 	public void curtirMusica(Long musicaId, Long usuarioId);
 	public void descurtirMusica(Long musicaId, Long usuarioId);
 	public long contarCurtidas(Long musicaId);
+	String curtirOuDescurtirMusica(Long musicaId, Long usuarioId);
+	List<MusicaModel> listarMusicasDoUsuario(Long usuarioId);
 }

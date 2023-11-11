@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
+import com.stoica.onetwo.domain.usuario.UsuarioModel;
+
 
 interface MusicaRepository extends JpaRepository<MusicaModel, Long>{
 
@@ -16,5 +18,8 @@ interface MusicaRepository extends JpaRepository<MusicaModel, Long>{
     long countCurtidas(@Param("musicaId") Long musicaId);
     
     List<MusicaModel> findByGenero(GeneroEnum genero);
+    
     List<MusicaModel> findAllByOrderByGenero();
+
+    List<MusicaModel> findByUsuario(UsuarioModel usuario);
 }

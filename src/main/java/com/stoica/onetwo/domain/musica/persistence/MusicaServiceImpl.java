@@ -116,6 +116,27 @@ class MusicaServiceImpl implements MusicaService{
 	
 	public long contarCurtidas(Long musicaId) {
         return musicaRepository.countCurtidas(musicaId);
+    }	
+
+	public String curtirOuDescurtirMusica(Long musicaId, Long usuarioId) {
+        MusicaModel musica = findById(musicaId);
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+
+        if (musica.getUsuariosCurtiram().contains(usuario)) {
+            descurtirMusica(musica.getId(), usuario.getId());
+			return "Música descurtida com sucesso.";
+        } else {
+            curtirMusica(musica.getId(), usuario.getId());
+			return "Música curtida com sucesso.";
+        }
     }
+
+
+	@Override
+	public List<MusicaModel> listarMusicasDoUsuario(Long usuarioId) {
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+		return musicaRepository.findByUsuario(usuario);
+    }
+
 
 }
