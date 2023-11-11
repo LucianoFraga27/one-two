@@ -15,6 +15,7 @@ import com.stoica.onetwo.core.upload.ArmazenarUpload.NovoArquivo;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
+import com.stoica.onetwo.domain.usuario.persistence.errors.UsuarioNaoEncontradoException;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -37,7 +38,7 @@ class UsuarioServiceImpl implements UsuarioService{
 
 	@Override
 	public UsuarioModel findById(Long id) {
-		return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Erro ao encontrar usuario com o Id "+id));
+		return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException("Erro ao encontrar usuario com o Id "+id));
 	}
 	
 	@Transactional
