@@ -1,6 +1,7 @@
 package com.stoica.onetwo.domain.usuario.persistence;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +24,7 @@ import lombok.Getter;
 
 @Service
 @AllArgsConstructor
-public class UsuarioServiceImpl implements UsuarioService{
+class UsuarioServiceImpl implements UsuarioService{
 	
 	UsuarioRepository usuarioRepository;
 	
@@ -56,8 +58,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 		armazenarUpload.armazenar(NovoArquivo.builder().nomeArquivo(capa).inputStream(dadosImagem).contentType(post.fotoPerfil().getContentType()).build());
 	}
 	
-	
-	
-	
+
+
 }
 

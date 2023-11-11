@@ -2,7 +2,8 @@ package com.stoica.onetwo.domain.usuario;
 
 import java.util.List;
 
-import com.stoica.onetwo.domain.auth.AuthModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.stoica.onetwo.domain.autenticacao.AuthModel;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -32,6 +34,7 @@ public class UsuarioModel {
     private String fotoPerfil;
     private GeneroEnum generoFavorito;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "usuariosCurtiram")
     private List<MusicaModel> musicasCurtidas;
 }
