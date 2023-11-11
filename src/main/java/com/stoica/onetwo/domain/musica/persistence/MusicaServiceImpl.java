@@ -138,5 +138,10 @@ class MusicaServiceImpl implements MusicaService{
 		return musicaRepository.findByUsuario(usuario);
     }
 
+	@Override
+	public List<MusicaModel> pesquisarPorTermo(String termo) {
+        return musicaRepository.pesquisarPorTermo(termo);
+    }
+
 
 }

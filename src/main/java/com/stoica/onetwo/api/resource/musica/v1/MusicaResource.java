@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stoica.onetwo.api.resource.musica.dto.MusicaMapper;
@@ -81,5 +82,11 @@ public class MusicaResource {
 	@PostMapping("/{musicaId}/curtirOuDescurtir/{usuarioId}")
     public ResponseEntity<String> curtirOuDescurtir(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
        return ResponseEntity.ok(musicaService.curtirOuDescurtirMusica(musicaId, usuarioId));
+    }
+
+	@GetMapping("/pesquisar/{termo}")
+    public ResponseEntity<List<MusicaModel>> pesquisarPorTermo(@PathVariable String termo) {
+        List<MusicaModel> musicasEncontradas = musicaService.pesquisarPorTermo(termo);
+        return ResponseEntity.ok(musicasEncontradas);
     }
 }

@@ -22,4 +22,10 @@ interface MusicaRepository extends JpaRepository<MusicaModel, Long>{
     List<MusicaModel> findAllByOrderByGenero();
 
     List<MusicaModel> findByUsuario(UsuarioModel usuario);
+
+    @Query("SELECT m FROM musica m WHERE " +
+           "m.titulo LIKE CONCAT('%', :termo, '%') OR " +
+           "m.usuario.username LIKE CONCAT('%', :termo, '%')")
+    List<MusicaModel> pesquisarPorTermo(@Param("termo") String termo);
+
 }
