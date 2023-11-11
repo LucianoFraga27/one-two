@@ -1,5 +1,6 @@
 package com.stoica.onetwo.api.resource.musica.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,13 +21,26 @@ public class MusicaMapper {
 	MusicaService musicaService;
 	UsuarioService usuarioService;
 	
-	public List<MusicaModel> findAll() {
+	public List<MusicaResponseDTO> findAll() {
 	    List<MusicaModel> musicas = musicaService.findAll();
+		List<MusicaResponseDTO> response = new ArrayList();
+		
 	    for (MusicaModel musica : musicas) {
-	    	musica.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
-			musica.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
+			MusicaResponseDTO dto = new MusicaResponseDTO(); 
+	    	dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
+			dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
+			dto.setCurtidas(musicaService.contarCurtidas(musica.getId()));
+			UsuarioModel usuario = usuarioService.findById(musica.getUsuario().getId());
+			UsuarioMusicaDTO usuarioMusica = new UsuarioMusicaDTO();
+			usuarioMusica.setId(usuario.getId());
+			usuarioMusica.setUsername(usuario.getUsername());
+			dto.setAutor(usuarioMusica);
+			dto.setId(musica.getId());
+			dto.setTitulo(musica.getTitulo());
+			dto.setGenero(musica.getGenero());
+			response.add(dto);
 	    }
-	    return musicas;
+	    return response;
 	}
 	
 	public MusicaResponseDTO findById(Long id)  {
@@ -48,6 +62,33 @@ public class MusicaMapper {
 		musicaResponse.setAutor(usuarioMusica);
 		
 		return musicaResponse;
+	}
+
+	public List<MusicaResponseCurtidaDTO> findByUsuario(Long usuarioId) {
+	    List<MusicaModel> musicas = musicaService.listarMusicasDoUsuario(usuarioId);
+		List<MusicaResponseCurtidaDTO> response = new ArrayList();
+		List<UsuarioCurtiuDTO> usuariosCurtiram = new ArrayList();
+	    for (MusicaModel musica : musicas) {
+			MusicaResponseCurtidaDTO dto = new MusicaResponseCurtidaDTO(); 
+	    	dto.setId(musica.getId());
+			dto.setTitulo(musica.getTitulo());
+			dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
+			dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
+			dto.setGenero(musica.getGenero());
+			dto.setCurtidas(musicaService.contarCurtidas(musica.getId()));
+			
+			for(UsuarioModel usuario: musica.getUsuariosCurtiram()){
+				UsuarioCurtiuDTO usuarioCurtiu = new UsuarioCurtiuDTO();
+				usuarioCurtiu.setId(usuario.getId());
+				usuarioCurtiu.setUsername(usuario.getUsername());
+				usuarioCurtiu.setFotoPerfil(usuario.getFotoPerfil());
+				usuariosCurtiram.add(usuarioCurtiu);
+			}
+			dto.setUsuariosCurtiram(usuariosCurtiram);			
+			response.add(dto);
+
+	    }
+	    return response;
 	}
 	
 }
