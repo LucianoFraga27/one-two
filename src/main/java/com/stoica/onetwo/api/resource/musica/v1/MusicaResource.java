@@ -64,8 +64,8 @@ public class MusicaResource {
 	}
 
 	@GetMapping("/genero/{genero}")
-	public List<MusicaModel> listByGenero(@PathVariable GeneroEnum genero) {
-		return musicaService.listByGenero(genero);
+	public List<MusicaResponseDTO> listByGenero(@PathVariable GeneroEnum genero) {
+		return musicaMapper.listByGenero(genero);
 	}
 
 	@PostMapping("/{musicaId}/curtir/{usuarioId}")

@@ -6,8 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.stoica.onetwo.core.upload.ArmazenarUpload;
+import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
@@ -148,5 +150,26 @@ public class MusicaMapper {
 
 	}
 
+	public List<MusicaResponseDTO> listByGenero( GeneroEnum genero) {
+		List<MusicaModel> musicas = musicaService.listByGenero(genero);
+		List<MusicaResponseDTO> response = new ArrayList();
+		
+	    for (MusicaModel musica : musicas) {
+			MusicaResponseDTO dto = new MusicaResponseDTO(); 
+	    	dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
+			dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
+			dto.setCurtidas(musicaService.contarCurtidas(musica.getId()));
+			UsuarioModel usuario = usuarioService.findById(musica.getUsuario().getId());
+			UsuarioMusicaDTO usuarioMusica = new UsuarioMusicaDTO();
+			usuarioMusica.setId(usuario.getId());
+			usuarioMusica.setUsername(usuario.getUsername());
+			dto.setAutor(usuarioMusica);
+			dto.setId(musica.getId());
+			dto.setTitulo(musica.getTitulo());
+			dto.setGenero(musica.getGenero());
+			response.add(dto);
+	    }
+	    return response;
+	}
 	
 }
