@@ -53,9 +53,9 @@ public class MusicaResource {
 	
 	}
 	
-	@DeleteMapping
-	public void remove() {
-	
+	@DeleteMapping("/{musicaId}")
+	public void remove(@PathVariable Long musicaId) {
+		musicaService.remove(musicaId);
 	}
 
 	@GetMapping("/usuario/{usuarioId}")

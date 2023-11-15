@@ -18,4 +18,6 @@ public interface MusicaService {
 	String curtirOuDescurtirMusica(Long musicaId, Long usuarioId);
 	List<MusicaModel> listarMusicasDoUsuario(Long usuarioId);
 	public List<MusicaModel> pesquisarPorTermo(String termo);
+	public void deletar(Long musicaId);
+
 }

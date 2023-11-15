@@ -144,4 +144,13 @@ class MusicaServiceImpl implements MusicaService{
     }
 
 
+	@Override
+	public void deletar(Long musicaId) {
+		MusicaModel m = findById(musicaId);
+		armazenarUpload.remover(m.getAudio());
+		armazenarUpload.remover(m.getCapa());
+		musicaRepository.deleteById(musicaId);
+	}
+
+
 }
