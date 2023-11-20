@@ -19,5 +19,6 @@ public interface MusicaService {
 	List<MusicaModel> listarMusicasDoUsuario(Long usuarioId);
 	public List<MusicaModel> pesquisarPorTermo(String termo);
 	public void deletar(Long musicaId);
-
+	public Boolean curtiuOuNao(Long musicaId, Long usuarioId);
+	List<MusicaModel> listarMusicasCurtidas(Long usuarioId);
 }

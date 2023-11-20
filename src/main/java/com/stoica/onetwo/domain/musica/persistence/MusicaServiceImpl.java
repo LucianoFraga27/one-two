@@ -152,5 +152,17 @@ class MusicaServiceImpl implements MusicaService{
 		musicaRepository.deleteById(musicaId);
 	}
 
+	@Override
+	public Boolean curtiuOuNao(Long musicaId, Long usuarioId) {
+		MusicaModel musica = findById(musicaId);
+		UsuarioModel usuario = usuarioService.findById(usuarioId);
+		return musica.getUsuariosCurtiram().contains(usuario);
+	}
+
+	@Override
+    public List<MusicaModel> listarMusicasCurtidas(Long usuarioId) {
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+        return musicaRepository.findByUsuariosCurtiramContaining(usuario);
+    }
 
 }

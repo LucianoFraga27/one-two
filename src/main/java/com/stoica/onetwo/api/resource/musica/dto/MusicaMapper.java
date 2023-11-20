@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.stoica.onetwo.api.resource.autenticacao.dto.MusicaCurtidaDTO;
 import com.stoica.onetwo.core.upload.ArmazenarUpload;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
@@ -124,12 +126,11 @@ public class MusicaMapper {
 		return response;
 	}
 
-	public List<PesquisaMusicaDTO> top () {
+	public List<PesquisaMusicaDTO> top() {
 		List<PesquisaMusicaDTO> response = new ArrayList<>();
-		UsuarioMusicaDTO autor = new UsuarioMusicaDTO();
 		List<MusicaModel> musicas = musicaService.findAll();
-
-		for ( MusicaModel m : musicas ) {
+	
+		for (MusicaModel m : musicas) {
 			PesquisaMusicaDTO dto = new PesquisaMusicaDTO();
 			dto.setIdMusica(m.getId());
 			dto.setTitulo(m.getTitulo());
@@ -137,18 +138,20 @@ public class MusicaMapper {
 			dto.setAudio(amazenarUpload.recuperar(m.getAudio()).getUrl());
 			dto.setGenero(m.getGenero());
 			dto.setCurtidas(musicaService.contarCurtidas(m.getId()));
+	
+			UsuarioMusicaDTO autor = new UsuarioMusicaDTO(); // Criando um novo autor para cada música
 			autor.setId(m.getUsuario().getId());
 			autor.setUsername(m.getUsuario().getUsername());
 			dto.setAutor(autor);
+	
 			response.add(dto);
 		}
 		
 		Collections.sort(response, Comparator.comparingLong(PesquisaMusicaDTO::getCurtidas).reversed());
-
+	
 		return response;
-
-
 	}
+	
 
 	public List<MusicaResponseDTO> listByGenero( GeneroEnum genero) {
 		List<MusicaModel> musicas = musicaService.listByGenero(genero);
@@ -171,5 +174,21 @@ public class MusicaMapper {
 	    }
 	    return response;
 	}
+
+	  public List<MusicaCurtidaDTO> listarMusicasCurtidas(Long usuarioId) {
+        List<MusicaModel> musicas = musicaService.listarMusicasCurtidas(usuarioId);
+        return musicas.stream().map(this::mapToMusicaCurtidaDTO).collect(Collectors.toList());
+    }
+
+    private MusicaCurtidaDTO mapToMusicaCurtidaDTO(MusicaModel musica) {
+        MusicaCurtidaDTO dto = new MusicaCurtidaDTO();
+        dto.setId(musica.getId());
+        dto.setTitulo(musica.getTitulo());
+		dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
+		dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
+        // Defina outros campos necessários no DTO
+
+        return dto;
+    }
 	
 }

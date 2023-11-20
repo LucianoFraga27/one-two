@@ -27,5 +27,5 @@ interface MusicaRepository extends JpaRepository<MusicaModel, Long>{
            "m.titulo LIKE CONCAT('%', :termo, '%') OR " +
            "m.usuario.username LIKE CONCAT('%', :termo, '%')")
     List<MusicaModel> pesquisarPorTermo(@Param("termo") String termo);
-
+    List<MusicaModel>  findByUsuariosCurtiramContaining (UsuarioModel usuario);
 }

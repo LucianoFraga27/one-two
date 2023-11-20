@@ -1,10 +1,13 @@
 package com.stoica.onetwo.api.resource.musica.v1;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +22,11 @@ import com.stoica.onetwo.api.resource.musica.dto.MusicaPostDTO;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseCurtidaDTO;
 import com.stoica.onetwo.api.resource.musica.dto.MusicaResponseDTO;
 import com.stoica.onetwo.api.resource.musica.dto.PesquisaMusicaDTO;
+import com.stoica.onetwo.domain.autenticacao.AuthModel;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
-
+import javax.security.auth.Subject;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -44,8 +48,9 @@ public class MusicaResource {
 	}
 	
 	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public MusicaModel postMusica(MusicaPostDTO musicaModel) throws IOException {
-		return musicaService.post(musicaModel, musicaModel.getCapa().getInputStream() ,musicaModel.getAudio().getInputStream());
+	public ResponseEntity<?> postMusica(MusicaPostDTO musicaModel) throws IOException {
+		musicaService.post(musicaModel, musicaModel.getCapa().getInputStream() ,musicaModel.getAudio().getInputStream());
+		return ResponseEntity.ok("Musica adicionada com sucesso");
 	}
 	
 	@PutMapping
@@ -95,4 +100,33 @@ public class MusicaResource {
     public ResponseEntity<List<PesquisaMusicaDTO>> getTop() {
       return ResponseEntity.ok(musicaMapper.top());
     }
+
+	@GetMapping("/curtiuounao/{musicaId}")
+    public ResponseEntity<Boolean> curtiuOuNao(Authentication authentication, @PathVariable Long musicaId) {
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+           
+                AuthModel authModel = (AuthModel) userDetails;
+                Long usuarioId = authModel.getId();
+                Boolean curtiu = musicaService.curtiuOuNao(musicaId, usuarioId);
+                return ResponseEntity.ok(curtiu);
+           
+        }
+        return ResponseEntity.badRequest().body(false);
+    }
+
+    @GetMapping("/listarMusicasCurtidas")
+    public ResponseEntity<List<?>> listarMusicasCurtidas(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            if (userDetails instanceof AuthModel) {
+                AuthModel authModel = (AuthModel) userDetails;
+                Long usuarioId = authModel.getId();
+                List<?> musicasCurtidas = musicaMapper.listarMusicasCurtidas(usuarioId);
+                return ResponseEntity.ok(musicasCurtidas);
+            }
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
 }
