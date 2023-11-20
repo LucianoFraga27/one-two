@@ -33,84 +33,85 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/v1/musica")
 @AllArgsConstructor
 public class MusicaResource {
-	
-	MusicaService musicaService;
-	MusicaMapper musicaMapper;
 
-	@GetMapping
-	public List<MusicaResponseDTO> findAll() {
-		return musicaMapper.findAll();
-	}
-	
-	@GetMapping("/{id}")
-	public MusicaResponseDTO findById(@PathVariable(value="id") Long id) {
-		return musicaMapper.findById(id);
-	}
-	
-	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<?> postMusica(MusicaPostDTO musicaModel) throws IOException {
-		musicaService.post(musicaModel, musicaModel.getCapa().getInputStream() ,musicaModel.getAudio().getInputStream());
-		return ResponseEntity.ok("Musica adicionada com sucesso");
-	}
-	
-	@PutMapping
-	public void edit() {
-	
-	}
-	
-	@DeleteMapping("/{musicaId}")
-	public void remove(@PathVariable Long musicaId) {
-		musicaService.remove(musicaId);
-	}
+    MusicaService musicaService;
+    MusicaMapper musicaMapper;
 
-	@GetMapping("/usuario/{usuarioId}")
-	public List<MusicaResponseCurtidaDTO> findByUsuario(@PathVariable Long usuarioId) {
-		return musicaMapper.findByUsuario(usuarioId);
-	}
+    @GetMapping
+    public List<MusicaResponseDTO> findAll() {
+        return musicaMapper.findAll();
+    }
 
-	@GetMapping("/genero/{genero}")
-	public List<MusicaResponseDTO> listByGenero(@PathVariable GeneroEnum genero) {
-		return musicaMapper.listByGenero(genero);
-	}
+    @GetMapping("/{id}")
+    public MusicaResponseDTO findById(@PathVariable(value = "id") Long id) {
+        return musicaMapper.findById(id);
+    }
 
-	@PostMapping("/{musicaId}/curtir/{usuarioId}")
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<?> postMusica(MusicaPostDTO musicaModel) throws IOException {
+        musicaService.post(musicaModel, musicaModel.getCapa().getInputStream(),
+                musicaModel.getAudio().getInputStream());
+        return ResponseEntity.ok("Musica adicionada com sucesso");
+    }
+
+    @PutMapping
+    public void edit() {
+
+    }
+
+    @DeleteMapping("/{musicaId}")
+    public void remove(@PathVariable Long musicaId) {
+        musicaService.remove(musicaId);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public List<MusicaResponseCurtidaDTO> findByUsuario(@PathVariable Long usuarioId) {
+        return musicaMapper.findByUsuario(usuarioId);
+    }
+
+    @GetMapping("/genero/{genero}")
+    public List<MusicaResponseDTO> listByGenero(@PathVariable GeneroEnum genero) {
+        return musicaMapper.listByGenero(genero);
+    }
+
+    @PostMapping("/{musicaId}/curtir/{usuarioId}")
     public ResponseEntity<String> curtirMusica(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
         musicaService.curtirMusica(musicaId, usuarioId);
         return ResponseEntity.ok("Música curtida com sucesso.");
     }
 
-	@DeleteMapping("/{musicaId}/curtir/{usuarioId}")
+    @DeleteMapping("/{musicaId}/curtir/{usuarioId}")
     public ResponseEntity<String> descurtir(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
         musicaService.descurtirMusica(musicaId, usuarioId);
         return ResponseEntity.ok("Música descurtida com sucesso.");
     }
-	
-	@PostMapping("/{musicaId}/curtirOuDescurtir/{usuarioId}")
+
+    @PostMapping("/{musicaId}/curtirOuDescurtir/{usuarioId}")
     public ResponseEntity<String> curtirOuDescurtir(@PathVariable Long musicaId, @PathVariable Long usuarioId) {
-       return ResponseEntity.ok(musicaService.curtirOuDescurtirMusica(musicaId, usuarioId));
+        return ResponseEntity.ok(musicaService.curtirOuDescurtirMusica(musicaId, usuarioId));
     }
 
-	@GetMapping("/pesquisar/{termo}")
+    @GetMapping("/pesquisar/{termo}")
     public ResponseEntity<List<PesquisaMusicaDTO>> pesquisarPorTermo(@PathVariable String termo) {
         List<PesquisaMusicaDTO> musicasEncontradas = musicaMapper.pesquisarPorTermo(termo);
         return ResponseEntity.ok(musicasEncontradas);
     }
 
-	@GetMapping("/top")
+    @GetMapping("/top")
     public ResponseEntity<List<PesquisaMusicaDTO>> getTop() {
-      return ResponseEntity.ok(musicaMapper.top());
+        return ResponseEntity.ok(musicaMapper.top());
     }
 
-	@GetMapping("/curtiuounao/{musicaId}")
+    @GetMapping("/curtiuounao/{musicaId}")
     public ResponseEntity<Boolean> curtiuOuNao(Authentication authentication, @PathVariable Long musicaId) {
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-           
-                AuthModel authModel = (AuthModel) userDetails;
-                Long usuarioId = authModel.getId();
-                Boolean curtiu = musicaService.curtiuOuNao(musicaId, usuarioId);
-                return ResponseEntity.ok(curtiu);
-           
+
+            AuthModel authModel = (AuthModel) userDetails;
+            Long usuarioId = authModel.getId();
+            Boolean curtiu = musicaService.curtiuOuNao(musicaId, usuarioId);
+            return ResponseEntity.ok(curtiu);
+
         }
         return ResponseEntity.badRequest().body(false);
     }
@@ -129,4 +130,14 @@ public class MusicaResource {
         return ResponseEntity.badRequest().body(null);
     }
 
+    @GetMapping("/listarMusicasCurtidas/{usuarioid}")
+    public ResponseEntity<List<?>> listarMusicasCurtidas(@PathVariable Long usuarioid) {
+        try {
+            List<?> musicasCurtidas = musicaMapper.listarMusicasCurtidas(usuarioid);
+            return ResponseEntity.ok(musicasCurtidas);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
 }

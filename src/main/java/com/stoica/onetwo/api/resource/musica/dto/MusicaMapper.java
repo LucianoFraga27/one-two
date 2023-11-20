@@ -175,20 +175,24 @@ public class MusicaMapper {
 	    return response;
 	}
 
-	  public List<MusicaCurtidaDTO> listarMusicasCurtidas(Long usuarioId) {
-        List<MusicaModel> musicas = musicaService.listarMusicasCurtidas(usuarioId);
-        return musicas.stream().map(this::mapToMusicaCurtidaDTO).collect(Collectors.toList());
-    }
-
-    private MusicaCurtidaDTO mapToMusicaCurtidaDTO(MusicaModel musica) {
-        MusicaCurtidaDTO dto = new MusicaCurtidaDTO();
-        dto.setId(musica.getId());
-        dto.setTitulo(musica.getTitulo());
+	public List<MusicaResponseDTO> listarMusicasCurtidas(Long usuarioId) {
+		List<MusicaModel> musicas = musicaService.listarMusicasCurtidas(usuarioId);
+		return musicas.stream().map(this::mapToMusicaResponseDTO).collect(Collectors.toList());
+	}
+	
+	private MusicaResponseDTO mapToMusicaResponseDTO(MusicaModel musica) {
+		MusicaResponseDTO dto = new MusicaResponseDTO();
+		dto.setId(musica.getId());
+		dto.setTitulo(musica.getTitulo());
 		dto.setAudio(amazenarUpload.recuperar(musica.getAudio()).getUrl());
 		dto.setCapa(amazenarUpload.recuperar(musica.getCapa()).getUrl());
-        // Defina outros campos necessários no DTO
-
-        return dto;
-    }
-	
+		// dto.setCurtidas(musicaService.contarCurtidas(musica.getId()));
+		dto.setGenero(musica.getGenero());
+		UsuarioModel usuario = usuarioService.findById(musica.getUsuario().getId());
+		UsuarioMusicaDTO usuarioMusica = new UsuarioMusicaDTO();
+		usuarioMusica.setId(usuario.getId());
+		usuarioMusica.setUsername(usuario.getUsername());
+		dto.setAutor(usuarioMusica);
+		return dto;
+	}
 }
