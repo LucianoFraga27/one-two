@@ -2,6 +2,7 @@ package com.stoica.onetwo.api.resource.musica.v1;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -26,6 +27,10 @@ import com.stoica.onetwo.domain.autenticacao.AuthModel;
 import com.stoica.onetwo.domain.musica.GeneroEnum;
 import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
+import com.stoica.onetwo.domain.usuario.UsuarioModel;
+import com.stoica.onetwo.domain.usuario.seguidores.RelacionamentoSeguidor;
+import com.stoica.onetwo.domain.usuario.seguidores.RelacionamentoSeguidorService;
+
 import javax.security.auth.Subject;
 import lombok.AllArgsConstructor;
 
@@ -138,6 +143,12 @@ public class MusicaResource {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
     }
+
+    @GetMapping("/seguidos-mscs/{userId}")
+    public ResponseEntity<List<MusicaResponseDTO>> listarMusicasDosSeguidos(@PathVariable Long userId) {
+        List<MusicaResponseDTO> musicasDosSeguidos = musicaMapper.listarMusicasDosSeguidos(userId);
+        return ResponseEntity.ok(musicasDosSeguidos);
+    }
+
 }

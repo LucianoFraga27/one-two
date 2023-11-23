@@ -5,6 +5,7 @@ package com.stoica.onetwo.domain.usuario.seguidores;
 import java.util.List;
 import java.util.Optional;
 
+import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 
 public interface RelacionamentoSeguidorService {
@@ -21,4 +22,6 @@ public interface RelacionamentoSeguidorService {
     Long contarSeguidores(UsuarioModel usuario);
 
     Long  contarSeguindo(UsuarioModel usuario);
+
+    List<MusicaModel> listarMusicasDosSeguidos(Long userId);
 }

@@ -33,8 +33,10 @@ onetwo-storage:
     local: 
      diretorio: /Users/lucas/Desktop/arquivos-tcc
     s3: 
-      id-chave-acesso: AKIA3UTCRJWVFY2NB46T
-      id-chave-acesso-secreta: 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
+      # id-chave-acesso: AKIA3UTCRJWVFY2NB46T
+      # id-chave-acesso-secreta: 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
+      id-chave-acesso: AKIA3UTCRJWVH5N2R2DS
+      id-chave-acesso-secreta: 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
       bucket: onetwo-arquivos-estudo
       regiao: us-east-2
       diretorio: catalogo

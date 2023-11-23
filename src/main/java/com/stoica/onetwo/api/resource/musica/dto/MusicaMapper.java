@@ -16,6 +16,7 @@ import com.stoica.onetwo.domain.musica.MusicaModel;
 import com.stoica.onetwo.domain.musica.MusicaService;
 import com.stoica.onetwo.domain.usuario.UsuarioModel;
 import com.stoica.onetwo.domain.usuario.UsuarioService;
+import com.stoica.onetwo.domain.usuario.seguidores.RelacionamentoSeguidorService;
 
 import lombok.AllArgsConstructor;
 
@@ -26,6 +27,7 @@ public class MusicaMapper {
 	ArmazenarUpload amazenarUpload;
 	MusicaService musicaService;
 	UsuarioService usuarioService;
+    RelacionamentoSeguidorService relacionamentoSeguidorService;
 	
 	public List<MusicaResponseDTO> findAll() {
 	    List<MusicaModel> musicas = musicaService.findAll();
@@ -195,4 +197,10 @@ public class MusicaMapper {
 		dto.setAutor(usuarioMusica);
 		return dto;
 	}
+
+	public List<MusicaResponseDTO> listarMusicasDosSeguidos(Long userId) {
+        List<MusicaModel> musicas = relacionamentoSeguidorService.listarMusicasDosSeguidos(userId);
+        return musicas.stream().map(this::mapToMusicaResponseDTO).collect(Collectors.toList());
+    }
+
 }

@@ -31,7 +31,7 @@ public class UsuarioResource {
 	private UsuarioService usuarioService;
 	private UsuarioMapper usuarioMapper;
 	private RelacionamentoSeguidorService relacionamentoSeguidorService;
-
+    private RelacionamentoSeguidorService seguidorService;
 
 	@GetMapping
 	public List<GetUsuarioResponseDTO> findAll() {
@@ -112,6 +112,12 @@ public class UsuarioResource {
     }
 }
 
+@GetMapping("/{seguidorID}/verficaSeSegue/{seguidoID}")
+public ResponseEntity<?> verificaSeJaSegue (@PathVariable Long seguidorID,@PathVariable  Long seguidoID) {
+    UsuarioModel SEGUIDOR = usuarioService.findById(seguidorID);
+    UsuarioModel SEGUIDO = usuarioService.findById(seguidoID);
+    return ResponseEntity.ok(seguidorService.verificarSeUsuarioSegue(SEGUIDOR, SEGUIDO));
+}
 
 
 }

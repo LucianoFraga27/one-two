@@ -49,6 +49,7 @@ public class ArmazenarUpload_S3_impl implements ArmazenarUpload {
 			
 			amazonS3.putObject(putObjectRequest);
 		} catch (Exception e) {
+			System.out.println("ERRO < -------- > "+e.getLocalizedMessage());
 			throw new RuntimeException("Erro ao armazenar na Amazon S3 - Storage Exception");
 		}
 	}
@@ -60,13 +61,16 @@ public class ArmazenarUpload_S3_impl implements ArmazenarUpload {
 	@Override
 	public void remover(String nomeArquivo) {
 	    try {
-	        String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+	        System.err.println("Excluindo do bucket S3");
+			String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
 
 	        var deleteObjectRequest = new DeleteObjectRequest(
 	                storageProperties.getS3().getBucket(), caminhoArquivo);
-
 	        amazonS3.deleteObject(deleteObjectRequest);
+			
+	        System.err.println("Excluido com Sucesso do bucket S3");
 	    } catch (Exception e) {
+			System.out.println("ERRO < -------- > "+e.getLocalizedMessage());
 	    	throw new RuntimeException("Erro ao remover na Amazon S3 - Storage Exception");
 	    }
 	}
