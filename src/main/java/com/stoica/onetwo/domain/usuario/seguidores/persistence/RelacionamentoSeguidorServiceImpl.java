@@ -88,9 +88,18 @@ public List<MusicaModel> listarMusicasDosSeguidos(Long userId) {
         System.out.println("USUARIO SEGUIDO ->>>>>>>>>>>"+usuario.getUsername());
         List<MusicaModel> musicasCurtidas = usuario.getMusicasCurtidas();
         List<MusicaModel> musicasDoUsuarioQueSigo = musicaService.listarMusicasDoUsuario(usuario.getId());
-
-       // musicasUnicas.addAll(musicasCurtidas);
+        musicasUnicas.addAll(musicasCurtidas);
         musicasUnicas.addAll(musicasDoUsuarioQueSigo);
+
+        for (MusicaModel m : musicasCurtidas) {
+            if(m.getId() == userId) {
+                System.out.println("Titulo : "+m.getTitulo());
+                musicasUnicas.remove(m);
+            }
+        }
+
+
+        
     }
 
     List<MusicaModel> musicasDosSeguidos = new ArrayList<>(musicasUnicas);
