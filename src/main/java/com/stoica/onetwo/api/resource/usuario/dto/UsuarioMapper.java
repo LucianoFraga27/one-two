@@ -3,7 +3,10 @@ package com.stoica.onetwo.api.resource.usuario.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.stoica.onetwo.core.upload.ArmazenarUpload;
 import com.stoica.onetwo.core.upload.ArmazenarUpload.ArquivoRecuperado;
@@ -58,6 +61,52 @@ public class UsuarioMapper {
             seguidoresCount,
             seguindoCount
         );
-	}
+	} 
+
+   
+    public List<GetUsuarioResponseDTO> listarSeguidores( Long usuarioId) {
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+        List<UsuarioModel> seguidores = relacionamentoSeguidorService.listarSeguidores(usuario);
+
+        List<GetUsuarioResponseDTO> usuariosDto = new ArrayList<>();
+
+        for (UsuarioModel u : seguidores) {
+
+            usuariosDto.add(new GetUsuarioResponseDTO(
+                u.getId(),
+                u.getEmail(),
+                u.getUsername(),
+                amazenarUpload.recuperar(u.getFotoPerfil()).getUrl(),
+                u.getGeneroFavorito(),
+                0L,
+                0L
+            ));
+        }
+
+        return usuariosDto;
+    }
+
+    
+    public List<GetUsuarioResponseDTO> listarSeguindo( Long usuarioId) {
+        UsuarioModel usuario = usuarioService.findById(usuarioId);
+        List<UsuarioModel> seguindo = relacionamentoSeguidorService.listarSeguindo(usuario);
+        List<GetUsuarioResponseDTO> usuariosDto = new ArrayList<>();
+
+        for (UsuarioModel u : seguindo) {
+
+            usuariosDto.add(new GetUsuarioResponseDTO(
+                u.getId(),
+                u.getEmail(),
+                u.getUsername(),
+                amazenarUpload.recuperar(u.getFotoPerfil()).getUrl(),
+                u.getGeneroFavorito(),
+                0L,
+                0L
+            ));
+        }
+
+        return usuariosDto;
+    }
+
 	
 }

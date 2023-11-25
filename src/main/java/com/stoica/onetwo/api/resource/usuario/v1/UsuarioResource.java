@@ -71,25 +71,14 @@ public class UsuarioResource {
     }
 
     @GetMapping("/{usuarioId}/seguidores")
-    public ResponseEntity<List<UsuarioModel>> listarSeguidores(@PathVariable Long usuarioId) {
-        // Busque o usuário do banco de dados (você pode fazer isso com seu serviço de usuário)
-        UsuarioModel usuario = usuarioService.findById(usuarioId);
-
-        // Chame o serviço para listar os seguidores do usuário
-        List<UsuarioModel> seguidores = relacionamentoSeguidorService.listarSeguidores(usuario);
-
-        return ResponseEntity.ok(seguidores);
+    public ResponseEntity<List<?>> listarSeguidores(@PathVariable Long usuarioId) {
+        
+        return ResponseEntity.ok(usuarioMapper.listarSeguidores(usuarioId));
     }
 
     @GetMapping("/{usuarioId}/seguindo")
-    public ResponseEntity<List<UsuarioModel>> listarSeguindo(@PathVariable Long usuarioId) {
-        // Busque o usuário do banco de dados (você pode fazer isso com seu serviço de usuário)
-        UsuarioModel usuario = usuarioService.findById(usuarioId);
-
-        // Chame o serviço para listar quem o usuário está seguindo
-        List<UsuarioModel> seguindo = relacionamentoSeguidorService.listarSeguindo(usuario);
-
-        return ResponseEntity.ok(seguindo);
+    public ResponseEntity<List<?>> listarSeguindo(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(usuarioMapper.listarSeguindo(usuarioId));
     }
 
 	@PostMapping("/{seguidorId}/seguir2/{seguidoId}")
